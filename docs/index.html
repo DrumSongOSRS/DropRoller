@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DropRoller - OSRS Loot Simulator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a3a52 0%, #2c5aa0 50%, #1a3a52 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(26, 58, 82, 0.95);
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 2px solid #d4a574;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #d4a574;
+            padding-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: #d4a574;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: #b0c4de;
+            font-size: 0.95em;
+        }
+
+        .form-section {
+            background: rgba(44, 90, 160, 0.3);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-left: 4px solid #d4a574;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #d4a574;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        select, input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #d4a574;
+            border-radius: 6px;
+            background: rgba(245, 245, 245, 0.1);
+            color: #f5f5f5;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        select:hover, input[type="number"]:hover {
+            background: rgba(245, 245, 245, 0.15);
+            border-color: #e5b589;
+        }
+
+        select:focus, input[type="number"]:focus {
+            outline: none;
+            background: rgba(245, 245, 245, 0.2);
+            border-color: #e5b589;
+            box-shadow: 0 0 8px rgba(212, 165, 116, 0.3);
+        }
+
+        .coming-soon {
+            color: #a0a0a0;
+            font-size: 0.9em;
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+            display: none;
+        }
+
+        .coming-soon.show {
+            display: block;
+        }
+
+        .table-container {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em;
+        }
+
+        thead {
+            position: sticky;
+            top: 0;
+            background: rgba(212, 165, 116, 0.2);
+        }
+
+        th {
+            padding: 12px;
+            text-align: left;
+            color: #d4a574;
+            font-weight: 600;
+            border-bottom: 2px solid #d4a574;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(212, 165, 116, 0.2);
+        }
+
+        tr:hover {
+            background: rgba(212, 165, 116, 0.1);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        .input-group .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        button {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #d4a574 0%, #c89968 100%);
+            color: #1a3a52;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.05em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(212, 165, 116, 0.4);
+            background: linear-gradient(135deg, #e5b589 0%, #d4a574 100%);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .checkboxes {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(212, 165, 116, 0.3);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #d4a574;
+        }
+
+        .checkbox-group label {
+            margin-bottom: 0;
+            color: #b0c4de;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 0.95em;
+        }
+
+        .results-section {
+            margin-top: 40px;
+            display: none;
+        }
+
+        .results-section.show {
+            display: block;
+        }
+
+        .results-title {
+            font-size: 1.8em;
+            color: #d4a574;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .result-group {
+            background: rgba(44, 90, 160, 0.3);
+            border-left: 4px solid #d4a574;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .result-group.show {
+            display: block;
+        }
+
+        .result-group h3 {
+            color: #d4a574;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .result-items {
+            margin-bottom: 15px;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(212, 165, 116, 0.1);
+            color: #b0c4de;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-item .item-name {
+            flex: 1;
+        }
+
+        .result-item .item-value {
+            text-align: right;
+            color: #d4a574;
+            font-weight: 500;
+        }
+
+        .result-summary {
+            background: rgba(212, 165, 116, 0.1);
+            border-left: 4px solid #d4a574;
+            padding: 12px;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+
+        .result-summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            color: #b0c4de;
+        }
+
+        .result-summary-row .label {
+            font-weight: 600;
+        }
+
+        .result-summary-row .value {
+            color: #d4a574;
+            font-weight: 600;
+        }
+
+        .error {
+            background: rgba(220, 53, 69, 0.2);
+            border-left: 4px solid #dc3545;
+            color: #ff8a9b;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .checkboxes {
+                grid-template-columns: 1fr;
+            }
+
+            .input-group {
+                flex-direction: column;
+            }
+
+            .input-group .form-group {
+                margin-bottom: 15px;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(212, 165, 116, 0.1);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(212, 165, 116, 0.4);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(212, 165, 116, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚓ DropRoller</h1>
+            <p>OSRS Loot Drop Table Simulator</p>
+        </div>
+
+        <div class="form-section">
+            <div class="form-group">
+                <label for="tableSelect">Select Drop Table:</label>
+                <select id="tableSelect">
+                    <option value="martial">Martial Salvage</option>
+                    <option value="fremmenik" disabled>Fremmenik Salvage</option>
+                    <option value="opulent" disabled>Opulent Salvage</option>
+                </select>
+                <div class="coming-soon" id="comingSoon">Might be coming soon!</div>
+            </div>
+
+            <div id="tablePreview"></div>
+
+            <div class="input-group">
+                <div class="form-group">
+                    <label for="rollsInput">Number of Rolls:</label>
+                    <input type="number" id="rollsInput" value="100" min="1" max="10000">
+                </div>
+                <button onclick="simulateRolls()">Simulate</button>
+            </div>
+
+            <div class="checkboxes">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="showDrops" checked>
+                    <label for="showDrops">Show All Drops</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="showAlchAll" checked>
+                    <label for="showAlchAll">Alch All</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="showAlchGF" checked>
+                    <label for="showAlchGF">Alch and Giant's Foundry</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="results-section" id="resultsSection">
+            <div class="results-title">📊 Simulation Results</div>
+            <div id="resultsContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // Embedded data
+        const dropTables = {
+            martial: {
+                name: "Martial Salvage",
+                preRoll: {
+                    "clue scroll (hard)": { rate: "1/500" },
+                    "Broken sextant": { rate: "1/3000" },
+                    "Dragon cannonball": { rate: "1/3000" },
+                    "Salvor's paint": { rate: "1/24000" }
+                },
+                mainTable: {
+                    "Mithril longsword": { rate: "1/8.1", barType: "Mithril bars", alchValue: true },
+                    "Adamant longsword": { rate: "1/12.15", barType: "Adamant bars", alchValue: true },
+                    "Adamant 2h sword": { rate: "1/24.3", barType: "Adamant bars", alchValue: true },
+                    "Green d'hide body": { rate: "1/24.3", alchValue: true },
+                    "Rune longsword": { rate: "1/243", alchValue: true },
+                    "Adamant arrowtips": { rate: "1/8.1", quantity: 3 },
+                    "Mithril dart tip": { rate: "1/8.1", quantity: 3 },
+                    "Adamant dart tip": { rate: "1/12.15", quantity: 2 },
+                    "Adamant arrow": { rate: "1/12.15", quantity: 2 },
+                    "Adamant bolts(unf)": { rate: "1/24.3", quantity: 2 },
+                    "Rune arrow": { rate: "1/24.3", quantity: 2 },
+                    "Adamant cannonball": { rate: "1/24.3", quantity: 2 },
+                    "Rune cannonball": { rate: "1/48.6", quantity: 1.5 },
+                    "Umbral frag": { rate: "19/4860" },
+                    "Camphor seed": { rate: "19/4860" },
+                    "Ironwood seed": { rate: "2/4860" },
+                    "Amulet of power": { rate: "1/12.15", alchValue: true },
+                    "Mahogany logs": { rate: "1/24.3" },
+                    "Adamantite nails": { rate: "1/48.6", quantity: 2 }
+                }
+            }
+        };
+
+        const itemValues = {
+            "Mithril longsword": { highAlch: 780, barsUsed: 2 },
+            "Adamant longsword": { highAlch: 1920, barsUsed: 2 },
+            "Adamant 2h sword": { highAlch: 3840, barsUsed: 3 },
+            "Green d'hide body": { highAlch: 1040, barsUsed: null },
+            "Rune longsword": { highAlch: 5000, barsUsed: 3 },
+            "Amulet of power": { highAlch: 320, barsUsed: null }
+        };
+
+        function parseFraction(fractionStr) {
+            if (fractionStr.includes('/')) {
+                const [num, denom] = fractionStr.split('/').map(Number);
+                return num / denom;
+            }
+            return parseFloat(fractionStr);
+        }
+
+        function updateTablePreview() {
+            const tableSelect = document.getElementById('tableSelect').value;
+            const comingSoon = document.getElementById('comingSoon');
+            const tablePreview = document.getElementById('tablePreview');
+
+            if (tableSelect !== 'martial') {
+                comingSoon.classList.add('show');
+                tablePreview.innerHTML = '';
+                return;
+            }
+
+            comingSoon.classList.remove('show');
+
+            const table = dropTables.martial;
+            let html = '<div class="table-container"><table><thead><tr><th>Item</th><th>Rate</th><th>Qty</th></tr></thead><tbody>';
+
+            // Pre-roll items
+            Object.entries(table.preRoll).forEach(([item, data]) => {
+                const qty = data.quantity || 1;
+                html += `<tr><td>${item}</td><td>${data.rate}</td><td>${qty}</td></tr>`;
+            });
+
+            // Main table items
+            Object.entries(table.mainTable).forEach(([item, data]) => {
+                const qty = data.quantity || 1;
+                html += `<tr><td>${item}</td><td>${data.rate}</td><td>${qty}</td></tr>`;
+            });
+
+            html += '</tbody></table></div>';
+            tablePreview.innerHTML = html;
+        }
+
+        function simulateRolls() {
+            const tableSelect = document.getElementById('tableSelect').value;
+            const rolls = parseInt(document.getElementById('rollsInput').value);
+
+            if (tableSelect !== 'martial') {
+                alert('This drop table is not available yet!');
+                return;
+            }
+
+            if (rolls < 1 || rolls > 10000) {
+                alert('Please enter a number between 1 and 10000');
+                return;
+            }
+
+            const table = dropTables.martial;
+            const preRollDrops = {};
+            const mainTableDrops = {};
+
+            // Build drop rates
+            const preRollRates = {};
+            Object.entries(table.preRoll).forEach(([item, data]) => {
+                preRollRates[item] = parseFraction(data.rate);
+            });
+
+            const mainTableRates = {};
+            Object.entries(table.mainTable).forEach(([item, data]) => {
+                mainTableRates[item] = parseFraction(data.rate);
+            });
+
+            // Simulate rolls
+            for (let i = 0; i < rolls; i++) {
+                let hitPreRoll = false;
+
+                // Check pre-roll
+                for (const [item, rate] of Object.entries(preRollRates)) {
+                    if (Math.random() < rate) {
+                        const qty = table.preRoll[item].quantity || 1;
+                        preRollDrops[item] = (preRollDrops[item] || 0) + qty;
+                        hitPreRoll = true;
+                        break;
+                    }
+                }
+
+                // If no pre-roll hit, roll main table
+                if (!hitPreRoll) {
+                    const roll = Math.random();
+                    let accumulated = 0;
+                    for (const [item, rate] of Object.entries(mainTableRates)) {
+                        accumulated += rate;
+                        if (roll < accumulated) {
+                            const qty = table.mainTable[item].quantity || 1;
+                            mainTableDrops[item] = (mainTableDrops[item] || 0) + qty;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // Floor quantities
+            Object.keys(preRollDrops).forEach(item => {
+                preRollDrops[item] = Math.floor(preRollDrops[item]);
+            });
+            Object.keys(mainTableDrops).forEach(item => {
+                mainTableDrops[item] = Math.floor(mainTableDrops[item]);
+            });
+
+            displayResults(rolls, preRollDrops, mainTableDrops, table);
+        }
+
+        function displayResults(rolls, preRollDrops, mainTableDrops, table) {
+            const resultsSection = document.getElementById('resultsSection');
+            const resultsContent = document.getElementById('resultsContent');
+            let html = '';
+
+            // Show All Drops section
+            if (document.getElementById('showDrops').checked) {
+                html += '<div class="result-group show">';
+                html += '<h3>Rewards</h3>';
+                html += '<div class="result-items">';
+
+                // Pre-roll
+                Object.entries(preRollDrops).forEach(([item, qty]) => {
+                    html += `<div class="result-item"><span class="item-name">${item}</span><span class="item-value">${qty}</span></div>`;
+                });
+
+                html += '</div>';
+                html += '<h3 style="margin-top: 15px;">Main Drop Table</h3>';
+                html += '<div class="result-items">';
+
+                // Main table
+                Object.entries(mainTableDrops).forEach(([item, qty]) => {
+                    html += `<div class="result-item"><span class="item-name">${item}</span><span class="item-value">${qty}</span></div>`;
+                });
+
+                html += '</div></div>';
+            }
+
+            // Alch All section
+            if (document.getElementById('showAlchAll').checked) {
+                const alchs = getAlchItems(mainTableDrops, table);
+                if (alchs.items.length > 0) {
+                    html += '<div class="result-group show">';
+                    html += '<h3>Alch All</h3>';
+                    html += '<div class="result-items">';
+
+                    alchs.items.forEach(([item, qty, value, total]) => {
+                        html += `<div class="result-item"><span class="item-name">${item} × ${qty} @ ${value}gp</span><span class="item-value">${total.toLocaleString()}gp</span></div>`;
+                    });
+
+                    html += '</div>';
+                    html += '<div class="result-summary">';
+                    html += `<div class="result-summary-row"><span class="label">Number of Alchs:</span><span class="value">${alchs.totalAlchs}</span></div>`;
+                    html += `<div class="result-summary-row"><span class="label">Magic XP:</span><span class="value">${(alchs.totalAlchs * 65).toLocaleString()}</span></div>`;
+                    html += `<div class="result-summary-row"><span class="label">Total Alch Value:</span><span class="value">${alchs.totalValue.toLocaleString()}gp</span></div>`;
+                    html += '</div></div>';
+                }
+            }
+
+            // Alch and GF section
+            if (document.getElementById('showAlchGF').checked) {
+                const alchGf = getAlchGFItems(mainTableDrops, table);
+                const gf = getGFItems(mainTableDrops, table);
+
+                // Alch section
+                if (alchGf.items.length > 0) {
+                    html += '<div class="result-group show">';
+                    html += '<h3>Alch and Giant\'s Foundry</h3>';
+                    html += '<div class="result-items">';
+
+                    alchGf.items.forEach(([item, qty, value, total]) => {
+                        html += `<div class="result-item"><span class="item-name">${item} × ${qty} @ ${value}gp</span><span class="item-value">${total.toLocaleString()}gp</span></div>`;
+                    });
+
+                    html += '</div>';
+                    html += '<div class="result-summary">';
+                    html += `<div class="result-summary-row"><span class="label">Number of Alchs:</span><span class="value">${alchGf.totalAlchs}</span></div>`;
+                    html += `<div class="result-summary-row"><span class="label">Magic XP:</span><span class="value">${(alchGf.totalAlchs * 65).toLocaleString()}</span></div>`;
+                    html += `<div class="result-summary-row"><span class="label">Total Alch Value:</span><span class="value">${alchGf.totalValue.toLocaleString()}gp</span></div>`;
+                    html += '</div>';
+                }
+
+                // GF section
+                if (gf.items.length > 0) {
+                    html += '<div class="result-group show" style="margin-top: 20px;">';
+                    html += '<h3>Giant\'s Foundry Summary</h3>';
+                    html += '<div class="result-items">';
+
+                    gf.items.forEach(([item, qty, bars, total]) => {
+                        html += `<div class="result-item"><span class="item-name">${item} × ${qty} @ ${bars} bars</span><span class="item-value">${total} bars</span></div>`;
+                    });
+
+                    html += '</div>';
+                    html += '<div class="result-summary">';
+
+                    // Bars by type
+                    Object.entries(gf.barsByType).forEach(([type, count]) => {
+                        html += `<div class="result-summary-row"><span class="label">${type}:</span><span class="value">${count}</span></div>`;
+                    });
+
+                    // XP calculation
+                    html += `<div class="result-summary-row" style="margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(212, 165, 116, 0.2);"><span class="label">Estimated XP:</span><span class="value">${gf.estimatedXp.toLocaleString()}</span></div>`;
+
+                    html += '</div></div>';
+                }
+            }
+
+            resultsContent.innerHTML = html;
+            resultsSection.classList.add('show');
+        }
+
+        function getAlchItems(drops, table) {
+            const items = [];
+            let totalValue = 0;
+            let totalAlchs = 0;
+
+            Object.entries(drops).forEach(([item, qty]) => {
+                const itemData = table.mainTable[item];
+                if (itemData && itemData.alchValue) {
+                    const values = itemValues[item];
+                    if (values && values.highAlch) {
+                        const total = values.highAlch * qty;
+                        items.push([item, qty, values.highAlch, total]);
+                        totalValue += total;
+                        totalAlchs += qty;
+                    }
+                }
+            });
+
+            return { items, totalValue, totalAlchs };
+        }
+
+        function getAlchGFItems(drops, table) {
+            const items = [];
+            let totalValue = 0;
+            let totalAlchs = 0;
+
+            Object.entries(drops).forEach(([item, qty]) => {
+                const itemData = table.mainTable[item];
+                if (itemData && itemData.alchValue && !itemData.barType) {
+                    const values = itemValues[item];
+                    if (values && values.highAlch) {
+                        const total = values.highAlch * qty;
+                        items.push([item, qty, values.highAlch, total]);
+                        totalValue += total;
+                        totalAlchs += qty;
+                    }
+                }
+            });
+
+            return { items, totalValue, totalAlchs };
+        }
+
+        function getGFItems(drops, table) {
+            const items = [];
+            const barsByType = {};
+            let totalBars = 0;
+
+            Object.entries(drops).forEach(([item, qty]) => {
+                const itemData = table.mainTable[item];
+                if (itemData && itemData.barType) {
+                    const values = itemValues[item];
+                    if (values && values.barsUsed) {
+                        const total = values.barsUsed * qty;
+                        items.push([item, qty, values.barsUsed, total]);
+                        totalBars += total;
+
+                        if (!barsByType[itemData.barType]) {
+                            barsByType[itemData.barType] = 0;
+                        }
+                        barsByType[itemData.barType] += total;
+                    }
+                }
+            });
+
+            // Calculate XP
+            const barTypeCounts = Object.values(barsByType).map(count => Math.floor(count / 14));
+            const completeSwords = Math.min(...barTypeCounts);
+            const estimatedXp = Math.max(0, completeSwords * 16570);
+
+            return { items, barsByType, totalBars, estimatedXp };
+        }
+
+        // Initialize
+        document.getElementById('tableSelect').addEventListener('change', updateTablePreview);
+        updateTablePreview();
+    </script>
+</body>
+</html>
