@@ -1,0 +1,95 @@
+{
+  "drop_table": {
+    "pre-roll": {
+      "clue scroll (hard)": {
+        "rate": "1/500"
+      },
+      "Broken sextant": {
+        "rate": "1/3000"
+      },
+      "Dragon cannonball": {
+        "rate": "1/3000"
+      },
+      "Salvor's paint": {
+        "rate": "1/24000"
+      }
+    },
+    "main table": {
+      "Mithril longsword": {
+        "rate": "1/8.1",
+        "bar_type": "Mithril bars",
+        "alch_value": true
+      },
+      "Adamant longsword": {
+        "rate": "1/12.15",
+        "bar_type": "Adamant bars",
+        "alch_value": true
+      },
+      "Adamant 2h sword": {
+        "rate": "1/24.3",
+        "bar_type": "Adamant bars",
+        "alch_value": true
+      },
+      "Green d'hide body": {
+        "rate": "1/24.3",
+        "alch_value": true
+      },
+      "Rune longsword": {
+        "rate": "1/243",
+        "alch_value": true
+      },
+      "Adamant arrowtips": {
+        "rate": "1/8.1",
+        "quantity": 3
+      },
+      "Mithril dart tip": {
+        "rate": "1/8.1",
+        "quantity": 3
+      },
+      "Adamant dart tip": {
+        "rate": "1/12.15",
+        "quantity": 2
+      },
+      "Adamant arrow": {
+        "rate": "1/12.15",
+        "quantity": 2
+      },
+      "Adamant bolts(unf)": {
+        "rate": "1/24.3",
+        "quantity": 2
+      },
+      "Rune arrow": {
+        "rate": "1/24.3",
+        "quantity": 2
+      },
+      "Adamant cannonball": {
+        "rate": "1/24.3",
+        "quantity": 2
+      },
+      "Rune cannonball": {
+        "rate": "1/48.6",
+        "quantity": 1.5
+      },
+      "Umbral frag": {
+        "rate": "19/4860"
+      },
+      "Camphor seed": {
+        "rate": "19/4860"
+      },
+      "Ironwood seed": {
+        "rate": "2/4860"
+      },
+      "Amulet of power": {
+        "rate": "1/12.15",
+        "alch_value": true
+      },
+      "Mahogany logs": {
+        "rate": "1/24.3"
+      },
+      "Adamantite nails": {
+        "rate": "1/48.6",
+        "quantity": 2
+      }
+    }
+  }
+}

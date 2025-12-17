@@ -1,0 +1,61 @@
+# Python artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.pyre/
+.pytype/
+.ipynb_checkpoints/
+
+# Python environments
+env/
+venv/
+ENV/
+
+# Node/JavaScript artifacts
+node_modules/
+dist/
+build/
+
+# Build & coverage
+coverage/
+htmlcov/
+
+# IDE & Editor
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log
+yarn-error.log
+
+# Editor temp files
+*.bak
+*.swp
+*~
+*.tmp
+*.old
+
+# Database
+*.sqlite3
+*.db
+*.sqlite
+
+# Build tools
+.tox/
+.nox/
+.cache/
+.bundle/
+.next/
+.out/
+.nuxt/
+
+# Misc
+.github/

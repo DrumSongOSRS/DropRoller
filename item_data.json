@@ -1,0 +1,94 @@
+{
+  "Mithril longsword": {
+    "high_alch": 780,
+    "bars_used": 2
+  },
+  "Adamant longsword": {
+    "high_alch": 1920,
+    "bars_used": 2
+  },
+  "Adamant 2h sword": {
+    "high_alch": 3840,
+    "bars_used": 3
+  },
+  "Green d'hide body": {
+    "high_alch": 1040,
+    "bars_used": null
+  },
+  "Rune longsword": {
+    "high_alch": 5000,
+    "bars_used": 3
+  },
+  "Amulet of power": {
+    "high_alch": 320,
+    "bars_used": null
+  },
+  "clue scroll (hard)": {
+    "high_alch": null,
+    "bars_used": null
+  },
+  "Broken sextant": {
+    "high_alch": null,
+    "bars_used": null
+  },
+  "Dragon cannonball": {
+    "high_alch": null,
+    "bars_used": null
+  },
+  "Salvor's paint": {
+    "high_alch": null,
+    "bars_used": null
+  },
+  "Adamant arrowtips": {
+    "high_alch": null,
+    "bars_used": null
+  },
+  "Mithril dart tip": {
+    "high_alch": null,
+    "bars_used": null
+  },
+  "Adamant dart tip": {
+    "high_alch": null,
+    "bars_used": null
+  },
+  "Adamant arrow": {
+    "high_alch": null,
+    "bars_used": null
+  },
+  "Adamant bolts(unf)": {
+    "high_alch": null,
+    "bars_used": null
+  },
+  "Rune arrow": {
+    "high_alch": null,
+    "bars_used": null
+  },
+  "Adamant cannonball": {
+    "high_alch": null,
+    "bars_used": null
+  },
+  "Rune cannonball": {
+    "high_alch": null,
+    "bars_used": null
+  },
+  "Umbral frag": {
+    "high_alch": null,
+    "bars_used": null
+  },
+  "Camphor seed": {
+    "high_alch": null,
+    "bars_used": null
+  },
+  "Ironwood seed": {
+    "high_alch": null,
+    "bars_used": null
+  },
+  "Mahogany logs": {
+    "high_alch": null,
+    "bars_used": null
+  },
+  "Adamantite nails": {
+    "high_alch": null,
+    "bars_used": null
+  }
+}
