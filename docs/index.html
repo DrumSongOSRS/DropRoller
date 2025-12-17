@@ -566,6 +566,10 @@
         function displayResults(rolls, preRollDrops, mainTableDrops, table) {
             const resultsSection = document.getElementById('resultsSection');
             const resultsContent = document.getElementById('resultsContent');
+            
+            // Store results for checkbox changes
+            window.lastResults = { rolls, preRollDrops, mainTableDrops, table };
+            
             let html = '';
 
             // Show All Drops section
@@ -748,8 +752,30 @@
             }
         }
 
+        function updateResults() {
+            const resultsSection = document.getElementById('resultsSection');
+            const resultsContent = document.getElementById('resultsContent');
+            
+            if (!resultsSection.classList.contains('show')) {
+                return; // No results to update yet
+            }
+
+            // Get the last stored results
+            if (window.lastResults) {
+                displayResults(
+                    window.lastResults.rolls,
+                    window.lastResults.preRollDrops,
+                    window.lastResults.mainTableDrops,
+                    window.lastResults.table
+                );
+            }
+        }
+
         // Initialize
         document.getElementById('tableSelect').addEventListener('change', updateTablePreview);
+        document.getElementById('showDrops').addEventListener('change', updateResults);
+        document.getElementById('showAlchAll').addEventListener('change', updateResults);
+        document.getElementById('showAlchGF').addEventListener('change', updateResults);
         updateTablePreview();
     </script>
 </body>
