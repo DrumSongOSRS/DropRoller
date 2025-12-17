@@ -117,6 +117,7 @@
             width: 100%;
             border-collapse: collapse;
             font-size: 0.9em;
+            opacity: 0.6;
         }
 
         thead {
@@ -370,30 +371,37 @@
                 <div class="coming-soon" id="comingSoon">Might be coming soon!</div>
             </div>
 
-            <div id="tablePreview"></div>
-
             <div class="input-group">
                 <div class="form-group">
                     <label for="rollsInput">Number of Rolls:</label>
-                    <input type="number" id="rollsInput" value="100" min="1" max="10000">
+                    <input type="number" id="rollsInput" value="1000" min="1" max="10000">
                 </div>
                 <button onclick="simulateRolls()">Simulate</button>
             </div>
 
-            <div class="checkboxes">
-                <div class="checkbox-group">
-                    <input type="checkbox" id="showDrops" checked>
-                    <label for="showDrops">Show All Drops</label>
-                </div>
-                <div class="checkbox-group">
-                    <input type="checkbox" id="showAlchAll" checked>
-                    <label for="showAlchAll">Alch All</label>
-                </div>
-                <div class="checkbox-group">
-                    <input type="checkbox" id="showAlchGF" checked>
-                    <label for="showAlchGF">Alch and Giant's Foundry</label>
+            <div class="form-group" style="margin-top: 30px; border-top: 1px solid rgba(212, 165, 116, 0.3); padding-top: 20px;">
+                <label style="margin-bottom: 15px;">Results Options</label>
+                <div class="checkboxes" style="border-top: none; margin-top: 0; padding-top: 0;">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="showDrops" checked>
+                        <label for="showDrops">Show All Drops</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="showAlchAll">
+                        <label for="showAlchAll">Alch All</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="showAlchGF">
+                        <label for="showAlchGF">Alch and Giant's Foundry</label>
+                    </div>
                 </div>
             </div>
+
+            <div style="margin-top: 20px;">
+                <button onclick="toggleTablePreview()" style="background: linear-gradient(135deg, #7a6b5e 0%, #6b5d52 100%);">Hide Drop Table</button>
+            </div>
+
+            <div id="tablePreview"></div>
         </div>
 
         <div class="results-section" id="resultsSection">
@@ -726,6 +734,18 @@
             const estimatedXp = Math.max(0, completeSwords * 16570);
 
             return { items, barsByType, totalBars, estimatedXp };
+        }
+
+        function toggleTablePreview() {
+            const tablePreview = document.getElementById('tablePreview');
+            const button = event.target;
+            if (tablePreview.innerHTML === '') {
+                updateTablePreview();
+                button.textContent = 'Hide Drop Table';
+            } else {
+                tablePreview.innerHTML = '';
+                button.textContent = 'Show Drop Table';
+            }
         }
 
         // Initialize
